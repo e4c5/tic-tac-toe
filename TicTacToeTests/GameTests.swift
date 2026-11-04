@@ -71,6 +71,24 @@ final class GameModelTests: XCTestCase {
         XCTAssertEqual(game.scores[.x], 1)
     }
 
+    func testDrawIncrementsDraws() {
+        let game = GameModel()
+        [0, 1, 2, 4, 3, 5, 7, 6, 8].forEach(game.play(at:))
+        XCTAssertEqual(game.outcome, .draw)
+        XCTAssertEqual(game.draws, 1)
+    }
+
+    func testResetScoresClearsCounters() {
+        let game = GameModel()
+        [0, 3, 1, 4, 2].forEach(game.play(at:))
+        XCTAssertEqual(game.scores[.x], 1)
+        game.resetScores()
+        XCTAssertEqual(game.scores[.x], 0)
+        XCTAssertEqual(game.scores[.o], 0)
+        XCTAssertEqual(game.draws, 0)
+        XCTAssertNil(game.outcome)
+    }
+
     func testComputerRespondsInVsComputerMode() {
         let game = GameModel()
         game.mode = .vsComputer

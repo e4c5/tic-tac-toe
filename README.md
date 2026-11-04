@@ -9,7 +9,7 @@ A simple native macOS tic-tac-toe game written in SwiftUI.
 ## Requirements
 
 - macOS 14+
-- Xcode 15+
+- Xcode 16+
 
 ## Build & run
 

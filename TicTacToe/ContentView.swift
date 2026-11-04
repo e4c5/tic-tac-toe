@@ -70,6 +70,7 @@ private struct CellView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .disabled(player != nil || game.outcome != nil || game.isComputerTurn)
         .accessibilityLabel("Cell \(index + 1), \(player?.rawValue ?? "empty")")
     }
 }

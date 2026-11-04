@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 
 enum Player: String, CaseIterable {
@@ -117,11 +118,15 @@ final class GameModel: ObservableObject {
         guard !isComputerTurn else { return }
         makeMove(at: index)
         if isComputerTurn {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
+            let work = DispatchWorkItem { [weak self] in
                 self?.playComputerMove()
             }
+            pendingComputerMove = work
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: work)
         }
     }
+
+    private var pendingComputerMove: DispatchWorkItem?
 
     func playComputerMove() {
         guard isComputerTurn, let index = AI.bestMove(on: board, for: computerPlayer) else { return }
@@ -129,6 +134,8 @@ final class GameModel: ObservableObject {
     }
 
     func newGame() {
+        pendingComputerMove?.cancel()
+        pendingComputerMove = nil
         board = Board()
         currentPlayer = .x
     }
