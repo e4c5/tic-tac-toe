@@ -1,0 +1,43 @@
+name: TicTacToe
+options:
+  bundleIdPrefix: com.e4c5
+  deploymentTarget:
+    macOS: "14.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  TicTacToe:
+    type: application
+    platform: macOS
+    sources: [TicTacToe]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.e4c5.TicTacToe
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Tic-Tac-Toe
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.board-games
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: YES
+        ENABLE_APP_SANDBOX: YES
+  TicTacToeTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [TicTacToeTests]
+    dependencies:
+      - target: TicTacToe
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/TicTacToe.app/Contents/MacOS/TicTacToe"
+schemes:
+  TicTacToe:
+    build:
+      targets:
+        TicTacToe: all
+        TicTacToeTests: [test]
+    test:
+      targets: [TicTacToeTests]
